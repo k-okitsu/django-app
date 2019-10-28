@@ -117,7 +117,7 @@ DUID と DGID にユーザーIDとグループIDを入れてから docker-compos
 7. サーバーを起動します  
     ```
     $ ./docom.sh up -d
-    もしくは<br />
+    もしくは
     $ DUID=$(id -u) DGID=$(id -g) docker-compose up -d
     ```
     webブラウザで、http://localhost:8080 にアクセスすると Django アプリが起動します<br />
