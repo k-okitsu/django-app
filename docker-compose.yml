@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  nginx :
+    image: nginx:1.17.4
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params 
+      - ./static:/static
+      - ./media:/media
+      - ./log/nginx/:/var/log/nginx
+    depends_on:
+      - web
+  
+  web:
+    build:
+      context: ./web
+      args:
+        - DUID=${DUID}
+        - DGID=${DGID}
+    user: ${DUID}:${DGID}
+    container_name: django.web
+    command: uwsgi --ini /code/mysite/mysite/uwsgi.ini
+    volumes:
+      - ./src:/code
+      - ./static:/static
+      - ./media:/media
+      - ./log/uwsgi/:/var/log/uwsgi
+    expose:
+      - "8001"
